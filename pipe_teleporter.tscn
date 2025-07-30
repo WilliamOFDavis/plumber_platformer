@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dewal8rivoxgm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i0e75"]
+size = Vector2(80, 40)
+
+[node name="PipeTeleporter" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_i0e75")

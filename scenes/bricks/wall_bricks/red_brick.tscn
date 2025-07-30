@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://264tm4bh1mmj"]
+
+[ext_resource type="Script" uid="uid://dwownmvwhm6c6" path="res://scenes/bricks/wall_bricks/red_brick.gd" id="1_kkayq"]
+[ext_resource type="Texture2D" uid="uid://djy2m7524a0r1" path="res://graphics/blocks/red_brick.png" id="2_ysyhh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sey5v"]
+size = Vector2(66, 64)
+
+[node name="RedBrick" type="StaticBody2D"]
+script = ExtResource("1_kkayq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ysyhh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_sey5v")

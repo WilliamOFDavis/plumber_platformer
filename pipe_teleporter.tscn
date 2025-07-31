@@ -1,9 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://dewal8rivoxgm"]
+[gd_scene load_steps=3 format=3 uid="uid://dewal8rivoxgm"]
+
+[ext_resource type="Script" uid="uid://bj1wu8t38u7x4" path="res://pipe_teleporter.gd" id="1_gahpe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i0e75"]
 size = Vector2(80, 40)
 
 [node name="PipeTeleporter" type="Area2D"]
+collision_mask = 4
+script = ExtResource("1_gahpe")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_i0e75")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

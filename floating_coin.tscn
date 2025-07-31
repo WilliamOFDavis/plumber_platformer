@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://10kpofbisnw2"]
+
+[ext_resource type="Script" uid="uid://bomxinlwyhu32" path="res://floating_coin.gd" id="1_ciaa0"]
+[ext_resource type="Texture2D" uid="uid://d1ri7pfjux1w7" path="res://graphics/drops/coin.png" id="2_ifoyk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hk4v8"]
+radius = 44.0454
+
+[node name="FloatingCoin" type="Area2D" groups=["pickups"]]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_ciaa0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ifoyk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_hk4v8")

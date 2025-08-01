@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://e88yqirhrlqy"]
+
+[ext_resource type="Texture2D" uid="uid://dqew6nhi36r6i" path="res://graphics/enemies/goomba.png" id="1_ab8fb"]
+[ext_resource type="Script" uid="uid://bkj3ps0mdi0hi" path="res://scenes/characters/enemies/goomba/goomba.gd" id="1_rjvgh"]
+[ext_resource type="Script" uid="uid://crprhpr2mgw0g" path="res://HurtboxComponent.gd" id="3_11g5y"]
+[ext_resource type="Script" uid="uid://chk2dt2cwxlj3" path="res://hitbox_component.gd" id="4_il4r1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rjvgh"]
+size = Vector2(64, 66)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_il4r1"]
+size = Vector2(68, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fqm2g"]
+size = Vector2(76, 63)
+
+[node name="Goomba" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 8
+collision_mask = 13
+script = ExtResource("1_rjvgh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ab8fb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_rjvgh")
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+collision_layer = 12
+collision_mask = 4
+script = ExtResource("3_11g5y")
+metadata/_custom_type_script = "uid://crprhpr2mgw0g"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(0, -39)
+shape = SubResource("RectangleShape2D_il4r1")
+
+[node name="HitboxComponent" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("4_il4r1")
+metadata/_custom_type_script = "uid://chk2dt2cwxlj3"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_fqm2g")
+
+[connection signal="player_hit" from="HitboxComponent" to="." method="_on_hitbox_component_player_hit"]

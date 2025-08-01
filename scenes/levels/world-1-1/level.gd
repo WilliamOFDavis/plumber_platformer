@@ -1,14 +1,20 @@
 extends Node2D
-
-@onready var floating_coin_scene: PackedScene = preload("res://floating_coin.tscn")
+@onready var mushroom_scene: PackedScene = preload("res://scenes/pickups/mushroom_pickup.tscn")
+@onready var goomba_scene: PackedScene = preload("res://scenes/characters/enemies/goomba/goomba.tscn")
+@onready var floating_coin_scene: PackedScene = preload("res://scenes/pickups/floating_coin.tscn")
 @onready var red_brick_scene: PackedScene = preload("res://scenes/bricks/wall_bricks/red_brick.tscn")
 @onready var ground_tilemap: TileMapLayer = $GroundSmall
 @onready var benign_question_brick_scene: PackedScene = preload("res://scenes/bricks/question_bricks/benign_question_brick.tscn")
-@onready var coin_scene: PackedScene = preload("res://rigid_coin.tscn")
+@onready var coin_scene: PackedScene = preload("res://scenes/pickups/rigid_coin.tscn")
+
 @onready var tile_scene_dictionary = {Vector2i(1,4) : red_brick_scene,
 Vector2i(2,5) : benign_question_brick_scene,
-Vector2i(1,5) : floating_coin_scene}
-@onready var alternate_tile_drop_scenes = {"rigid_coin" : coin_scene}
+Vector2i(1,5) : floating_coin_scene, 
+Vector2i(4,5): goomba_scene}
+
+@onready var alternate_tile_drop_scenes = {"rigid_coin" : coin_scene, 
+"super_mushroom": mushroom_scene}
+
 func _ready() -> void:
 	
 	var used_cells: Array[Vector2i] = ground_tilemap.get_used_cells()
@@ -38,6 +44,9 @@ func _ready() -> void:
 			elif new_scene.is_in_group("pickups"):
 				$Pickups.add_child(new_scene)
 				
+			elif new_scene.is_in_group("enemies"):
+				$Enemies.add_child(new_scene)
+				
 			ground_tilemap.set_cell(i)
 
 
@@ -47,5 +56,5 @@ func replace_question_brick(brick_pos: Vector2) -> void:
 
 func spawn_pickup_loot(loot:PackedScene, quantity: int, loot_position: Vector2) -> void:
 	var loot_drop: Node2D = loot.instantiate()
-	loot_drop.global_position = loot_position + Vector2(0,-40)
+	loot_drop.global_position = loot_position
 	$Pickups.add_child(loot_drop)

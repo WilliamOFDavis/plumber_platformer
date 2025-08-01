@@ -15,15 +15,12 @@ run/main_scene="res://scenes/levels/world-1-1/level.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
-[display]
-
-window/size/mode=3
-
 [global_group]
 
 player=""
 pickups=""
 bricks=""
+enemies=""
 
 [input]
 
@@ -53,6 +50,7 @@ down={
 2d_physics/layer_1="Ground and Tilemap"
 2d_physics/layer_2="Pickups"
 2d_physics/layer_3="Player"
+2d_physics/layer_4="Enemies"
 
 [physics]
 

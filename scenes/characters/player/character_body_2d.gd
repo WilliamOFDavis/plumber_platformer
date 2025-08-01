@@ -2,11 +2,17 @@ extends CharacterBody2D
 
 class_name Player
 
+
+@export var accelleration_due_to_gravity: float = 2500
+@export var base_gravity: float = 3000.0
+@export var jump_velocity: float = -1100.0
+@export var terminal_velocity_y: float = 5000
+@export var knock_back_magnitude: float = 1000
+
+var growth_level: int = 1
+var fire_active: bool = 0
 var air: bool = false
 var fresh_jump: bool = true
-var accelleration_due_to_gravity: float = 3000
-var base_gravity: float = 3000.0
-var terminal_velocity_y: float = 5000
 var leeway: bool = false
 var input_locked: bool = false
 var warp_queued: bool = false
@@ -14,9 +20,12 @@ var warp_destination: Vector2 = Vector2.ZERO
 var queued_warp_direction: Vector2 = Vector2.ZERO
 var queued_warp_destination: Vector2 = Vector2.ZERO
 var queued_warp_emergence_direction: Vector2 = Vector2.DOWN
+var bounce_queued: bool = false
+var knockback_queued: bool = true
+var knockback_vector: Vector2 = Vector2.ZERO
 # Called when the node enters the scene tree for the first time.s
 func _ready() -> void:
-	pass # Replace with function body.
+	scale = Vector2(0.5,0.5)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -38,23 +47,37 @@ func _physics_process(delta: float) -> void:
 			leeway = false
 			fresh_jump = true
 			$Timer.start()
-			velocity.y = -1400
+			velocity.y = jump_velocity
 		if Input.is_action_pressed("down") and warp_queued:
 			warp(queued_warp_direction,queued_warp_destination)
 	#if Input.is_action_pressed("jump") and fresh_jump and velocity.y < 0:
 		#accelleration_due_to_gravity = 1750
+	if bounce_queued:
+		velocity.y = -1000
+		var vel = velocity
+		bounce_queued = false
+	velocity = velocity + knockback_vector
 	move_and_slide()
+	knockback_vector = lerp(knockback_vector, Vector2.ZERO, 0.2)
 	
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
-		if collision.get_collider() is StaticBody2D and collision.get_normal().y == 1:
-			collision.get_collider().hit()
+		var collider = collision.get_collider()
+		if collider is StaticBody2D and collision.get_normal().y == 1:
+			collider.hit()
+		#if collider is Goomba and collision.get_normal() == Vector2(0,-1):
+			#if !collider.dead:
+				#bounce_queued = true
+				#collider.flatten()
 
 func queue_warp(direction: Vector2, destination: Vector2, emergence_direction: Vector2) -> void:
 	warp_queued = true
 	queued_warp_destination = destination
 	queued_warp_direction = direction
 	queued_warp_emergence_direction = emergence_direction
+
+func queue_bounce() -> void:
+	bounce_queued = true
 
 func unqueue_warp() -> void:
 	warp_queued = false
@@ -87,8 +110,23 @@ func get_input() -> void:
 func pickup_coin() -> void:
 	pass
 
+func hit(knock_back_direction: Vector2) -> void:
+	
+	knockback_vector = Vector2(knock_back_direction.x,knock_back_direction.y * -0.2 - 0.1) * knock_back_magnitude
+	reduce_growth()
+
+
+func reduce_growth() -> void:
+	if growth_level > 1:
+		growth_level -= 1
+		var tween = get_tree().create_tween()
+		tween.tween_property(self, "scale", scale-Vector2(0.5,0.5), 1)
+
 func pickup_mushroom() -> void:
-	pass
+	if growth_level < 2:
+		growth_level += 1
+		var tween = get_tree().create_tween()
+		tween.tween_property(self, "scale", scale*2, 1)
 
 func _on_timer_timeout() -> void:
 	leeway = false

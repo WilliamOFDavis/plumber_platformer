@@ -5,6 +5,7 @@ class_name RigidCoin
 var scene_entry: bool = true
 
 func _ready() -> void:
+	position.y -= 40
 	var random_point: Vector2 = Vector2(position.x + randf_range(-10.0,10.0), position.y - 70)
 	var direction: Vector2 
 	direction = (random_point - position).normalized()

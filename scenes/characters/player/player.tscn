@@ -5,7 +5,6 @@
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 4
-collision_mask = 9
 script = ExtResource("1_onrkg")
 
 [node name="Icon" type="Sprite2D" parent="."]
@@ -19,6 +18,6 @@ polygon = PackedVector2Array(0, -33, -20, -21, -20, 31, 19, 32, 20, -20)
 process_callback = 0
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
-drag_top_margin = 0.5
+drag_top_margin = 0.6
 drag_right_margin = 0.05
 drag_bottom_margin = 0.5

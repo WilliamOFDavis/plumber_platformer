@@ -6,7 +6,8 @@ extends Node2D
 @onready var ground_tilemap: TileMapLayer = $GroundSmall
 @onready var benign_question_brick_scene: PackedScene = preload("res://scenes/bricks/question_bricks/benign_question_brick.tscn")
 @onready var coin_scene: PackedScene = preload("res://scenes/pickups/rigid_coin.tscn")
-
+@onready var koopa_shell_scene: PackedScene = preload("res://scenes/characters/enemies/koopa/koopa_shell.tscn")
+@onready var koopa_scene: PackedScene = preload("res://scenes/characters/enemies/koopa/koopa.tscn")
 @onready var tile_scene_dictionary = {Vector2i(1,4) : red_brick_scene,
 Vector2i(2,5) : benign_question_brick_scene,
 Vector2i(1,5) : floating_coin_scene, 
@@ -48,7 +49,10 @@ func _ready() -> void:
 				$Enemies.add_child(new_scene)
 				
 			ground_tilemap.set_cell(i)
-
+	for i in $Enemies.get_children():
+			#i.set_begin()
+			if i is Koopa:
+				i.connect("koopa_dead", spawn_koopa_shell)
 
 func replace_question_brick(brick_pos: Vector2) -> void:
 	var tile_id: Vector2i = ground_tilemap.local_to_map(brick_pos)
@@ -58,3 +62,8 @@ func spawn_pickup_loot(loot:PackedScene, quantity: int, loot_position: Vector2) 
 	var loot_drop: Node2D = loot.instantiate()
 	loot_drop.global_position = loot_position
 	$Pickups.add_child(loot_drop)
+
+func spawn_koopa_shell(pos: Vector2) -> void:
+	var shell = koopa_shell_scene.instantiate()
+	shell.global_position = pos
+	$Enemies.call_deferred("add_child",shell)

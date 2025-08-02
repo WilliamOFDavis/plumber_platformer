@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://2r37nsxoy6em"]
+
+[ext_resource type="Script" uid="uid://xppjjwbho1e0" path="res://raycast_component.gd" id="1_v2udg"]
+
+[node name="RaycastComponent" type="Node2D"]
+script = ExtResource("1_v2udg")
+
+[node name="RayCastDown" type="RayCast2D" parent="."]
+exclude_parent = false
+target_position = Vector2(0, 34)
+
+[node name="RayCastUp" type="RayCast2D" parent="."]
+target_position = Vector2(0, -50)
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+target_position = Vector2(50, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+target_position = Vector2(-50, 0)
+
+[node name="RayCastFallingLeft" type="RayCast2D" parent="."]
+position = Vector2(-5, 0)
+target_position = Vector2(0, 34)
+
+[node name="RayCastFallingRight" type="RayCast2D" parent="."]
+position = Vector2(5, 0)
+target_position = Vector2(0, 32)

@@ -19,7 +19,6 @@ func _on_body_entered(body: Node2D) -> void:
 		var direction_to_player: Vector2 = body.position - position
 		var normalized_direction: Vector2 = direction_to_player.normalized()
 		var angle_to = normalized_direction.angle()
-		if angle_to < PI/2 + PI/3:
+		if body.position.y > position.y + 50:
 			dead.emit()
 			body.queue_bounce()
-			self.queue_free()

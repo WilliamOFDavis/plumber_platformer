@@ -5,7 +5,7 @@ class_name Player
 
 @export var accelleration_due_to_gravity: float = 2500
 @export var base_gravity: float = 3000.0
-@export var jump_velocity: float = -1100.0
+@export var jump_velocity: float = -1300.0
 @export var terminal_velocity_y: float = 5000
 @export var knock_back_magnitude: float = 1000
 
@@ -42,7 +42,7 @@ func _physics_process(delta: float) -> void:
 		if velocity.y < terminal_velocity_y:
 			velocity.y += accelleration_due_to_gravity*delta
 	if !input_locked:
-		velocity.x = Input.get_axis("move_left","move_right") * 300
+		velocity.x = Input.get_axis("move_left","move_right") * 400
 		if Input.is_action_pressed("jump") and (is_on_floor() or leeway):
 			leeway = false
 			fresh_jump = true
@@ -54,6 +54,7 @@ func _physics_process(delta: float) -> void:
 		#accelleration_due_to_gravity = 1750
 	if bounce_queued:
 		velocity.y = -1000
+		velocity.x = 0
 		var vel = velocity
 		bounce_queued = false
 	velocity = velocity + knockback_vector
@@ -111,8 +112,7 @@ func pickup_coin() -> void:
 	pass
 
 func hit(knock_back_direction: Vector2) -> void:
-	
-	knockback_vector = Vector2(knock_back_direction.x,knock_back_direction.y * -0.2 - 0.1) * knock_back_magnitude
+	knockback_vector = Vector2(knock_back_direction.x*2,0) * knock_back_magnitude
 	reduce_growth()
 
 

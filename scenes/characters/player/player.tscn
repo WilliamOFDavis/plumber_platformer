@@ -1,18 +1,71 @@
-[gd_scene load_steps=3 format=3 uid="uid://5ysbs5gmdmh4"]
+[gd_scene load_steps=14 format=3 uid="uid://5ysbs5gmdmh4"]
 
 [ext_resource type="Script" uid="uid://lwd35h1frs2y" path="res://scenes/characters/player/character_body_2d.gd" id="1_onrkg"]
-[ext_resource type="Texture2D" uid="uid://c6ofgqauatdly" path="res://icon.svg" id="2_i3pqv"]
+[ext_resource type="Texture2D" uid="uid://byj4tvv31g66c" path="res://graphics/character/Mario.png" id="2_t61fv"]
+[ext_resource type="Script" uid="uid://cdrbsatfbsgdl" path="res://scenes/characters/player/player_state_machine.gd" id="3_686vu"]
+[ext_resource type="Script" uid="uid://bvkefino2rhbp" path="res://scenes/characters/player/player_velocity_component.gd" id="5_mk55u"]
+[ext_resource type="Script" uid="uid://cojo2fovyw0h1" path="res://scenes/characters/player/input_component.gd" id="6_xuses"]
+[ext_resource type="Script" uid="uid://c810iyntnnwwv" path="res://scenes/characters/player/growth_state_machine.gd" id="7_mk55u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t61fv"]
+size = Vector2(38, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_42irl"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3xnwo"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(416, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_686vu"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(288, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hss88"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(320, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qd3e3"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(352, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6avc5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_42irl")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3xnwo")
+}],
+"loop": true,
+"name": &"in_air",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_686vu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hss88")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qd3e3")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_layer = 4
 script = ExtResource("1_onrkg")
-
-[node name="Icon" type="Sprite2D" parent="."]
-scale = Vector2(0.3125, 0.5)
-texture = ExtResource("2_i3pqv")
-
-[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(0, -33, -20, -21, -20, 31, 19, 32, 20, -20)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 process_callback = 0
@@ -21,3 +74,27 @@ drag_vertical_enabled = true
 drag_top_margin = 0.6
 drag_right_margin = 0.05
 drag_bottom_margin = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_t61fv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_6avc5")
+animation = &"idle"
+frame_progress = 0.9507
+
+[node name="PlayerStateMachine" type="Node" parent="."]
+script = ExtResource("3_686vu")
+
+[node name="PlayerVelocityComponent" type="Node2D" parent="." node_paths=PackedStringArray("player_state_machine", "player_sprite")]
+script = ExtResource("5_mk55u")
+player_state_machine = NodePath("../PlayerStateMachine")
+player_sprite = NodePath("../AnimatedSprite2D")
+
+[node name="InputComponent" type="Node2D" parent="." node_paths=PackedStringArray("player_velocity_component")]
+script = ExtResource("6_xuses")
+player_velocity_component = NodePath("../PlayerVelocityComponent")
+
+[node name="GrowthStateMachine" type="Node" parent="."]
+script = ExtResource("7_mk55u")

@@ -8,22 +8,28 @@ extends Node2D
 @onready var coin_scene: PackedScene = preload("res://scenes/pickups/rigid_coin.tscn")
 @onready var koopa_shell_scene: PackedScene = preload("res://scenes/characters/enemies/koopa/koopa_shell.tscn")
 @onready var koopa_scene: PackedScene = preload("res://scenes/characters/enemies/koopa/koopa.tscn")
-@onready var tile_scene_dictionary = {Vector2i(1,4) : red_brick_scene,
+@onready var starting_tilemap: TileMapLayer
+@onready var tile_scene_dictionary = {
+Vector2i(1,4) : red_brick_scene,
 Vector2i(2,5) : benign_question_brick_scene,
 Vector2i(1,5) : floating_coin_scene, 
-Vector2i(4,5): goomba_scene}
-
+Vector2i(4,5) : goomba_scene,
+Vector2i(5,5) : koopa_scene}
 @onready var alternate_tile_drop_scenes = {"rigid_coin" : coin_scene, 
 "super_mushroom": mushroom_scene}
 
+@export var starting_lives: int = 3
+var lives: int
+
 func _ready() -> void:
-	
+	lives = starting_lives
 	var used_cells: Array[Vector2i] = ground_tilemap.get_used_cells()
 	for i in used_cells:
 		var cell_atlas_coords: Vector2i = ground_tilemap.get_cell_atlas_coords(i)
 		var alt = ground_tilemap.get_cell_alternative_tile(i)
 		var tile_scene = tile_scene_dictionary.get(cell_atlas_coords)
-		
+		if cell_atlas_coords == Vector2i(5,5):
+			pass
 		if  tile_scene!= null:
 			var new_scene: Node2D = tile_scene.instantiate()
 			if alt > 0:

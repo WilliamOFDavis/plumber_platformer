@@ -2,34 +2,17 @@
 
 [ext_resource type="Texture2D" uid="uid://dqew6nhi36r6i" path="res://graphics/enemies/goomba.png" id="1_ab8fb"]
 [ext_resource type="Script" uid="uid://bkj3ps0mdi0hi" path="res://scenes/characters/enemies/goomba/goomba.gd" id="1_rjvgh"]
-[ext_resource type="Script" uid="uid://crprhpr2mgw0g" path="res://HurtboxComponent.gd" id="3_11g5y"]
-[ext_resource type="Script" uid="uid://chk2dt2cwxlj3" path="res://hitbox_component.gd" id="4_il4r1"]
 [ext_resource type="PackedScene" uid="uid://2r37nsxoy6em" path="res://component/raycast_component.tscn" id="5_fqm2g"]
+[ext_resource type="PackedScene" uid="uid://crr8j6vc5ffdp" path="res://component/player_detector_component.tscn" id="6_44hpp"]
 [ext_resource type="PackedScene" uid="uid://c7p8m5difgr0" path="res://component/movement_component.tscn" id="6_vy4rj"]
 [ext_resource type="Script" uid="uid://ctmemhanoaxaj" path="res://velocity_component.gd" id="7_44hpp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6bher"]
+radius = 33.6155
 
 [node name="Goomba" type="Sprite2D" groups=["enemies"]]
 texture = ExtResource("1_ab8fb")
 script = ExtResource("1_rjvgh")
-
-[node name="HurtboxComponent" type="Area2D" parent="."]
-collision_layer = 12
-collision_mask = 4
-script = ExtResource("3_11g5y")
-metadata/_custom_type_script = "uid://crprhpr2mgw0g"
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HurtboxComponent"]
-position = Vector2(3, 1)
-polygon = PackedVector2Array(-30, -18, -30, -31, 23, -31, 24, -18)
-
-[node name="HitboxComponent" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 4
-script = ExtResource("4_il4r1")
-metadata/_custom_type_script = "uid://chk2dt2cwxlj3"
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitboxComponent"]
-polygon = PackedVector2Array(-28, -13, -28, -6, -32, -3, -32, 12, -28, 16, -21, 16, -21, 23, -15, 24, 14, 24, 16, 25, 21, 24, 21, 15, 29, 15, 31, 13, 31, -3, 28, -6, 27, -17, -28, -17)
 
 [node name="RaycastComponent" parent="." instance=ExtResource("5_fqm2g")]
 
@@ -41,6 +24,13 @@ velocity_component = NodePath("../VelocityComponent")
 script = ExtResource("7_44hpp")
 metadata/_custom_type_script = "uid://ctmemhanoaxaj"
 
-[connection signal="dead" from="HurtboxComponent" to="." method="flatten"]
-[connection signal="player_hit" from="HitboxComponent" to="." method="_on_hitbox_component_player_hit"]
+[node name="PlayerDetectorComponent" parent="." instance=ExtResource("6_44hpp")]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectorComponent"]
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_6bher")
+
 [connection signal="move_position" from="MovementComponent" to="." method="_on_movement_component_move_position"]
+[connection signal="stomped" from="PlayerDetectorComponent" to="." method="_on_player_detector_component_stomped"]

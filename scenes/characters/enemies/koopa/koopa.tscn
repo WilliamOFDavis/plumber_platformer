@@ -1,20 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://bs1w48aol5wsp"]
+[gd_scene load_steps=8 format=3 uid="uid://bs1w48aol5wsp"]
 
 [ext_resource type="Texture2D" uid="uid://bpo2mjt3dp245" path="res://graphics/enemies/koopa.png" id="1_wabd1"]
 [ext_resource type="Script" uid="uid://n5sg1w44w0s2" path="res://scenes/characters/enemies/koopa/koopa.gd" id="2_3dkbp"]
 [ext_resource type="PackedScene" uid="uid://2r37nsxoy6em" path="res://component/raycast_component.tscn" id="2_8smpf"]
 [ext_resource type="PackedScene" uid="uid://c7p8m5difgr0" path="res://component/movement_component.tscn" id="3_3dkbp"]
-[ext_resource type="PackedScene" uid="uid://cmbwb612fo75v" path="res://hurtbox_component.tscn" id="4_8oncn"]
-[ext_resource type="PackedScene" uid="uid://4agjwli14ioj" path="res://component/hitbox_component.tscn" id="5_f1qlx"]
+[ext_resource type="PackedScene" uid="uid://crr8j6vc5ffdp" path="res://component/player_detector_component.tscn" id="6_wabd1"]
 [ext_resource type="Script" uid="uid://ctmemhanoaxaj" path="res://velocity_component.gd" id="6_yydgr"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jkumc"]
-size = Vector2(52, 39)
+[sub_resource type="CircleShape2D" id="CircleShape2D_8smpf"]
+radius = 30.0167
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0kf3r"]
-size = Vector2(46, 2)
-
-[node name="Koopa" type="Sprite2D"]
+[node name="Koopa" type="Sprite2D" groups=["enemies"]]
 texture = ExtResource("1_wabd1")
 script = ExtResource("2_3dkbp")
 
@@ -24,25 +20,14 @@ script = ExtResource("2_3dkbp")
 raycast_component = NodePath("../RaycastComponent")
 velocity_component = NodePath("../VelocityComponent")
 
-[node name="HurtboxComponent" parent="." instance=ExtResource("4_8oncn")]
-collision_layer = 8
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
-position = Vector2(1, -33.5)
-shape = SubResource("RectangleShape2D_jkumc")
-
-[node name="HitboxComponent" parent="." instance=ExtResource("5_f1qlx")]
-collision_layer = 8
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
-position = Vector2(1, 9)
-shape = SubResource("RectangleShape2D_0kf3r")
-
 [node name="VelocityComponent" type="Node2D" parent="."]
 script = ExtResource("6_yydgr")
 metadata/_custom_type_script = "uid://ctmemhanoaxaj"
 
+[node name="PlayerDetectorComponent" parent="." instance=ExtResource("6_wabd1")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetectorComponent"]
+shape = SubResource("CircleShape2D_8smpf")
+
 [connection signal="move_position" from="MovementComponent" to="." method="_on_movement_component_move_position"]
-[connection signal="dead" from="HurtboxComponent" to="." method="_on_hurtbox_component_dead"]
+[connection signal="stomped" from="PlayerDetectorComponent" to="." method="_on_player_detector_component_stomped"]

@@ -32,8 +32,12 @@ func _physics_process(delta: float) -> void:
 				var new_global_position: Vector2 = global_position + velocity * delta
 				move_position.emit(new_global_position)
 			elif raycast_component.get_collision(direction):
+				if get_parent() is Sprite2D:
+					get_parent().flip_h = not get_parent().flip_h
 				direction = direction * -1
 			elif !raycast_component.get_collision(Vector2.DOWN) and !get_parent() is MushroomPickup: 
+				if get_parent() is Sprite2D:
+					get_parent().flip_h = not get_parent().flip_h
 				direction = direction * -1
 				velocity_component.set_x_direction(direction.x)
 				velocity = velocity_component.get_velocity(delta)

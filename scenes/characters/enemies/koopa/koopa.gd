@@ -22,3 +22,8 @@ func _on_movement_component_move_position(new_position: Variant) -> void:
 func _on_hurtbox_component_dead() -> void:
 	koopa_dead.emit(global_position)
 	self.queue_free()
+
+
+func _on_player_detector_component_stomped() -> void:
+	koopa_dead.emit(global_position)
+	self.queue_free()

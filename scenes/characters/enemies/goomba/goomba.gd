@@ -24,8 +24,6 @@ func flatten() -> void:
 	##flatten_starting_position = position
 	dead = true
 	movement_component.set_dead()
-	$HitboxComponent.set_collision_mask_value(3,false)
-	$HurtboxComponent.set_collision_mask_value(3,false)
 	scale.y = 0.2
 	global_position.y = global_position.y + 30
 
@@ -41,3 +39,7 @@ func _on_hitbox_component_player_hit() -> void:
 
 func _on_movement_component_move_position(new_position: Variant) -> void:
 	global_position = new_position
+
+
+func _on_player_detector_component_stomped() -> void:
+	flatten()

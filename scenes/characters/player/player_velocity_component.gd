@@ -11,6 +11,8 @@ class_name PlayerVelocityComponent
 @export var velocity: Vector2
 @export var direction: Vector2 = Vector2.ZERO
 
+var knockback_force: float =  500.0
+var knockback_velocity: Vector2
 var warping: bool = false
 
 func set_x_direction(axis: float) -> void:
@@ -19,16 +21,18 @@ func set_x_direction(axis: float) -> void:
 		player_sprite.flip_h = false
 	elif direction.x == -1:
 		player_sprite.flip_h = true
-	velocity.x = speed * axis
-
+	if knockback_velocity.length() < 50:  # or some small threshold
+		velocity.x = speed * axis
 func set_y_velocity(vel: float) -> void:
 	velocity.y = vel
 
 func _physics_process(delta: float) -> void:
 	if player_state_machine.get_state() == player_state_machine.get_states().in_air and !warping:
 		velocity.y += gravity * delta
-	else:
+	elif knockback_velocity == Vector2.ZERO:
 		velocity.y = 0
+	velocity = velocity + knockback_velocity
+	knockback_velocity = lerp(knockback_velocity,Vector2.ZERO,0.2)
 func is_moving() -> bool:
 	if velocity.x == 0:
 		return false
@@ -37,3 +41,10 @@ func is_moving() -> bool:
 
 func get_velocity() -> Vector2:
 	return velocity
+
+func knock_back(knockback_direction: Vector2) -> void:
+	knockback_velocity = knockback_direction * knockback_force
+	knockback_velocity.y = min(knockback_velocity.y, 200) 
+
+func cancel_knock_back() -> void:
+	knockback_velocity = Vector2.ZERO

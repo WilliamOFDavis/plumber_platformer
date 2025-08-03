@@ -16,9 +16,9 @@ func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		var direction_to_player: Vector2 = body.position - global_position
 		var posy =  global_position.y - body.position.y 
-		if posy > 20:
+		if posy > 10:
 			body.queue_bounce()
 			stomped.emit()
 			self.queue_free()
 		else:
-			body.hit(direction_to_player.normalized())
+			body.hit(self)

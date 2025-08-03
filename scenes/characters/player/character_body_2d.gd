@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 class_name Player
 
-
+@onready var growth_state_machine: GrowthStateMachine = $GrowthStateMachine
 @onready var velocity_component: PlayerVelocityComponent = $PlayerVelocityComponent
 @onready var input_component = $InputComponent
 var input_locked: bool = false
@@ -11,6 +11,10 @@ var warp_destination: Vector2 = Vector2.ZERO
 var queued_warp_direction: Vector2 = Vector2.ZERO
 var queued_warp_destination: Vector2 = Vector2.ZERO
 var queued_warp_emergence_direction: Vector2 = Vector2.DOWN
+var start_position: Vector2
+
+func _ready() -> void:
+	start_position = global_position
 
 func queue_warp(direction: Vector2, destination: Vector2, emergence_direction: Vector2) -> void:
 	warp_queued = true
@@ -46,14 +50,15 @@ func unlock_input_and_grav() -> void:
 	velocity_component.warping = false
 
 func pickup_mushroom() -> void:
-	pass
+	growth_state_machine.pickup_mushroom()
 
 func pickup_coin() -> void:
 	pass
 
-func hit(direction: Vector2) -> void:
-	pass
-	
+func hit(attacking_body: Node2D) -> void:
+	var knockback_direction: Vector2 = (global_position - attacking_body.global_position).normalized()
+	velocity_component.knock_back(knockback_direction)
+	$GrowthStateMachine.damage()
 func queue_bounce() -> void:
 	velocity_component.set_y_velocity(-1000.0)
 	
@@ -71,3 +76,8 @@ func _physics_process(delta: float) -> void:
 			collider.hit()
 			velocity_component.set_y_velocity(0)
 	
+
+
+func _on_growth_state_machine_death() -> void:
+	position = start_position
+	velocity_component.cancel_knock_back()

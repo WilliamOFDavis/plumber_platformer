@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://5ysbs5gmdmh4"]
+[gd_scene load_steps=19 format=3 uid="uid://5ysbs5gmdmh4"]
 
 [ext_resource type="Script" uid="uid://lwd35h1frs2y" path="res://scenes/characters/player/character_body_2d.gd" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://byj4tvv31g66c" path="res://graphics/character/Mario.png" id="2_t61fv"]
@@ -9,6 +9,26 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t61fv"]
 size = Vector2(38, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6avc5"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(544, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mk55u"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(704, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xuses"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(576, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djydg"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(608, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bsn6e"]
+atlas = ExtResource("2_t61fv")
+region = Rect2(640, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_42irl"]
 atlas = ExtResource("2_t61fv")
@@ -32,6 +52,36 @@ region = Rect2(352, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6avc5"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6avc5")
+}],
+"loop": true,
+"name": &"fire_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mk55u")
+}],
+"loop": true,
+"name": &"fire_in_air",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xuses")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_djydg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bsn6e")
+}],
+"loop": true,
+"name": &"fire_walk",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_42irl")
@@ -81,20 +131,26 @@ shape = SubResource("RectangleShape2D_t61fv")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_6avc5")
-animation = &"idle"
-frame_progress = 0.9507
+animation = &"fire_walk"
+frame_progress = 0.298906
+speed_scale = 2.0
 
-[node name="PlayerStateMachine" type="Node" parent="."]
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("growth_state_machine")]
 script = ExtResource("3_686vu")
+growth_state_machine = NodePath("../GrowthStateMachine")
 
 [node name="PlayerVelocityComponent" type="Node2D" parent="." node_paths=PackedStringArray("player_state_machine", "player_sprite")]
 script = ExtResource("5_mk55u")
 player_state_machine = NodePath("../PlayerStateMachine")
 player_sprite = NodePath("../AnimatedSprite2D")
+gravity = 1800.0
 
 [node name="InputComponent" type="Node2D" parent="." node_paths=PackedStringArray("player_velocity_component")]
 script = ExtResource("6_xuses")
 player_velocity_component = NodePath("../PlayerVelocityComponent")
+jump_velocity = -1100.0
 
 [node name="GrowthStateMachine" type="Node" parent="."]
 script = ExtResource("7_mk55u")
+
+[connection signal="death" from="GrowthStateMachine" to="." method="_on_growth_state_machine_death"]

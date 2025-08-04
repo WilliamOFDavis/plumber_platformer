@@ -18,6 +18,8 @@ func _process(delta: float) -> void:
 func _on_movement_component_move_position(new_position: Variant) -> void:
 	global_position = new_position
 
+func kill() -> void:
+	_on_hurtbox_component_dead()
 
 func _on_hurtbox_component_dead() -> void:
 	koopa_dead.emit(global_position)

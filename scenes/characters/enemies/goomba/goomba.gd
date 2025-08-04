@@ -31,7 +31,9 @@ func flatten() -> void:
 func _physics_process(delta: float) -> void:
 	pass
 
-
+func kill() -> void:
+	if !dead:
+		flatten()
 
 func _on_hitbox_component_player_hit() -> void:
 	direction_facing = direction_facing * -1
@@ -42,4 +44,5 @@ func _on_movement_component_move_position(new_position: Variant) -> void:
 
 
 func _on_player_detector_component_stomped() -> void:
-	flatten()
+	if !dead:
+		flatten()

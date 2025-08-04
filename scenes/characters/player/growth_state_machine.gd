@@ -2,6 +2,8 @@ extends StateMachine
 
 class_name GrowthStateMachine
 @onready var parent: Player = get_parent()
+@export var player_state_machine: StateMachine
+@export var sprite: AnimatedSprite2D 
 
 signal death
 
@@ -23,6 +25,18 @@ func _enter_state(new_state, old_state) -> void:
 		states.dead:
 			death.emit()
 			set_state(states.big)
+		states.fire: 
+			parent.scale = Vector2(1,1)
+			var player_states = player_state_machine.get_states()
+			match player_state_machine.get_state():
+				player_states.idle:
+					sprite.play("fire_idle")
+				player_states.run:
+					sprite.play("fire_walk")
+				player_states.in_air:
+					sprite.play("fire_in_air")
+
+
 func _exit_state(old_state, new_state) -> void:
 	pass
 
@@ -33,3 +47,6 @@ func damage() -> void:
 func pickup_mushroom() -> void:
 	if state == states.small:
 		set_state(states.big)
+ 
+func pickup_fire() -> void: 
+	set_state(states.fire)

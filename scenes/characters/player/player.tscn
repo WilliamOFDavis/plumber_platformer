@@ -132,7 +132,7 @@ shape = SubResource("RectangleShape2D_t61fv")
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_6avc5")
 animation = &"fire_walk"
-frame_progress = 0.298906
+frame_progress = 0.0964406
 speed_scale = 2.0
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("growth_state_machine")]
@@ -145,12 +145,16 @@ player_state_machine = NodePath("../PlayerStateMachine")
 player_sprite = NodePath("../AnimatedSprite2D")
 gravity = 1800.0
 
-[node name="InputComponent" type="Node2D" parent="." node_paths=PackedStringArray("player_velocity_component")]
+[node name="InputComponent" type="Node2D" parent="." node_paths=PackedStringArray("player_velocity_component", "growth_state_machine")]
 script = ExtResource("6_xuses")
 player_velocity_component = NodePath("../PlayerVelocityComponent")
 jump_velocity = -1100.0
+growth_state_machine = NodePath("../GrowthStateMachine")
 
-[node name="GrowthStateMachine" type="Node" parent="."]
+[node name="GrowthStateMachine" type="Node" parent="." node_paths=PackedStringArray("player_state_machine", "sprite")]
 script = ExtResource("7_mk55u")
+player_state_machine = NodePath("../PlayerStateMachine")
+sprite = NodePath("../AnimatedSprite2D")
 
+[connection signal="shoot_fireball" from="InputComponent" to="." method="_on_input_component_shoot_fireball"]
 [connection signal="death" from="GrowthStateMachine" to="." method="_on_growth_state_machine_death"]

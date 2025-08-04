@@ -13,6 +13,8 @@ var queued_warp_destination: Vector2 = Vector2.ZERO
 var queued_warp_emergence_direction: Vector2 = Vector2.DOWN
 var start_position: Vector2
 
+signal shoot_fireball(fireball_pos, fireball_direction)
+
 func _ready() -> void:
 	start_position = global_position
 
@@ -59,6 +61,7 @@ func hit(attacking_body: Node2D) -> void:
 	var knockback_direction: Vector2 = (global_position - attacking_body.global_position).normalized()
 	velocity_component.knock_back(knockback_direction)
 	$GrowthStateMachine.damage()
+	
 func queue_bounce() -> void:
 	velocity_component.set_y_velocity(-1000.0)
 	
@@ -77,7 +80,20 @@ func _physics_process(delta: float) -> void:
 			velocity_component.set_y_velocity(0)
 	
 
+func death() -> void:
+	position = start_position
+	growth_state_machine.set_state(growth_state_machine.get_states().big)
+	velocity_component.cancel_knock_back()
 
 func _on_growth_state_machine_death() -> void:
-	position = start_position
-	velocity_component.cancel_knock_back()
+	death()
+
+func fire_flower() -> void: 
+	growth_state_machine.pickup_fire()
+
+
+func _on_input_component_shoot_fireball() -> void:
+	if $AnimatedSprite2D.flip_h == true:
+		shoot_fireball.emit(global_position - Vector2(16,0), -1.0)
+	elif $AnimatedSprite2D.flip_h == false:
+		shoot_fireball.emit(global_position + Vector2(16,0), 1.0)

@@ -1,4 +1,7 @@
 extends Node2D
+
+@onready var fire_flower_scene: PackedScene = preload("res://scenes/pickups/fire_flower.tscn")
+@onready var fireball_scene: PackedScene = preload("res://scenes/projectiles/fireball.tscn")
 @onready var mushroom_scene: PackedScene = preload("res://scenes/pickups/mushroom_pickup.tscn")
 @onready var goomba_scene: PackedScene = preload("res://scenes/characters/enemies/goomba/goomba.tscn")
 @onready var floating_coin_scene: PackedScene = preload("res://scenes/pickups/floating_coin.tscn")
@@ -10,13 +13,17 @@ extends Node2D
 @onready var koopa_scene: PackedScene = preload("res://scenes/characters/enemies/koopa/koopa.tscn")
 @onready var starting_tilemap: TileMapLayer
 @onready var tile_scene_dictionary = {
-Vector2i(1,4) : red_brick_scene,
-Vector2i(2,5) : benign_question_brick_scene,
-Vector2i(1,5) : floating_coin_scene, 
-Vector2i(4,5) : goomba_scene,
-Vector2i(5,5) : koopa_scene}
-@onready var alternate_tile_drop_scenes = {"rigid_coin" : coin_scene, 
-"super_mushroom": mushroom_scene}
+	Vector2i(1,4) : red_brick_scene,
+	Vector2i(2,5) : benign_question_brick_scene,
+	Vector2i(1,5) : floating_coin_scene, 
+	Vector2i(4,5) : goomba_scene,
+	Vector2i(5,5) : koopa_scene,
+	Vector2i(5,3) : fire_flower_scene}
+@onready var alternate_tile_drop_scenes = {
+	"rigid_coin" : coin_scene, 
+	"super_mushroom": mushroom_scene,
+	"fire_flower": fire_flower_scene
+}
 
 @export var starting_lives: int = 3
 var lives: int
@@ -28,8 +35,6 @@ func _ready() -> void:
 		var cell_atlas_coords: Vector2i = ground_tilemap.get_cell_atlas_coords(i)
 		var alt = ground_tilemap.get_cell_alternative_tile(i)
 		var tile_scene = tile_scene_dictionary.get(cell_atlas_coords)
-		if cell_atlas_coords == Vector2i(5,5):
-			pass
 		if  tile_scene!= null:
 			var new_scene: Node2D = tile_scene.instantiate()
 			if alt > 0:
@@ -73,3 +78,9 @@ func spawn_koopa_shell(pos: Vector2) -> void:
 	var shell = koopa_shell_scene.instantiate()
 	shell.global_position = pos
 	$Enemies.call_deferred("add_child",shell)
+
+func spawn_fireball(fireball_pos, fireball_direction):
+	var fireball: Fireball = fireball_scene.instantiate()
+	fireball.global_position = fireball_pos
+	fireball.horizontal_direction = fireball_direction
+	$Projectiles.add_child(fireball)

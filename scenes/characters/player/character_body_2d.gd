@@ -97,3 +97,16 @@ func _on_input_component_shoot_fireball() -> void:
 		shoot_fireball.emit(global_position - Vector2(16,0), -1.0)
 	elif $AnimatedSprite2D.flip_h == false:
 		shoot_fireball.emit(global_position + Vector2(16,0), 1.0)
+
+func flag_travel(base_of_flag: Vector2, mounting_position):
+	input_component.input_locked = true
+	$PlayerVelocityComponent.warping = true
+	global_position.x = base_of_flag.x
+	get_tree().create_timer(0.5).timeout.connect(
+		func(): flag_travel_timer_timeout(base_of_flag,mounting_position)
+		)
+
+
+func flag_travel_timer_timeout(base_of_flag:Vector2, mounting_position):
+	var tween = get_tree().create_tween()
+	tween.tween_property(self,"global_position", base_of_flag,1.5)

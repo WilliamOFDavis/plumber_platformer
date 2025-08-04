@@ -27,10 +27,13 @@ func set_y_velocity(vel: float) -> void:
 	velocity.y = vel
 
 func _physics_process(delta: float) -> void:
-	if player_state_machine.get_state() == player_state_machine.get_states().in_air and !warping:
-		velocity.y += gravity * delta
-	elif knockback_velocity == Vector2.ZERO:
-		velocity.y = 0
+	if !warping:
+		if player_state_machine.get_state() == player_state_machine.get_states().in_air and !warping:
+			velocity.y += gravity * delta
+		elif knockback_velocity == Vector2.ZERO:
+			velocity.y = 0
+	else: 
+		velocity =  Vector2.ZERO
 	velocity = velocity + knockback_velocity
 	knockback_velocity = lerp(knockback_velocity,Vector2.ZERO,0.2)
 func is_moving() -> bool:

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://2r37nsxoy6em"]
 
-[ext_resource type="Script" uid="uid://xppjjwbho1e0" path="res://raycast_component.gd" id="1_v2udg"]
+[ext_resource type="Script" uid="uid://xppjjwbho1e0" path="res://component/raycast_component.gd" id="1_v2udg"]
 
 [node name="RaycastComponent" type="Node2D"]
 script = ExtResource("1_v2udg")

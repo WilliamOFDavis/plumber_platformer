@@ -24,7 +24,6 @@ func check_falling() -> bool:
 	var falling: bool = true
 	for i in raycasts_falling:
 		var raycast = i
-		var gp = global_position
 		if raycast.is_colliding():
 			falling = false
 	return falling

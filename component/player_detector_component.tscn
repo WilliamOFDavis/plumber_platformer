@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://crr8j6vc5ffdp"]
 
-[ext_resource type="Script" uid="uid://crpjs6uud8obg" path="res://player_detector_component.gd" id="1_1inc4"]
+[ext_resource type="Script" uid="uid://crpjs6uud8obg" path="res://component/player_detector_component.gd" id="1_1inc4"]
 
 [node name="PlayerDetectorComponent" type="Area2D"]
 collision_layer = 13

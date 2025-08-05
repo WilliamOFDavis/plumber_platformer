@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://c0d7tas0iijip"]
 
 [ext_resource type="Script" uid="uid://cghbikndqn1ij" path="res://scenes/pickups/mushroom_pickup.gd" id="1_7prhw"]
-[ext_resource type="Script" uid="uid://0c1ks5w2ubod" path="res://pickup_detection_component.gd" id="2_2mvpl"]
+[ext_resource type="Script" uid="uid://0c1ks5w2ubod" path="res://component/pickup_detection_component.gd" id="2_2mvpl"]
 [ext_resource type="Texture2D" uid="uid://c2d2hcec6corc" path="res://graphics/drops/mushroom.png" id="3_2mvpl"]
 [ext_resource type="PackedScene" uid="uid://c7p8m5difgr0" path="res://component/movement_component.tscn" id="4_gkh3t"]
 [ext_resource type="PackedScene" uid="uid://2r37nsxoy6em" path="res://component/raycast_component.tscn" id="5_3tcdd"]
-[ext_resource type="Script" uid="uid://ctmemhanoaxaj" path="res://velocity_component.gd" id="6_28fkl"]
+[ext_resource type="Script" uid="uid://ctmemhanoaxaj" path="res://component/velocity_component.gd" id="6_28fkl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l4s47"]
 size = Vector2(70, 70)

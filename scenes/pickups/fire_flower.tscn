@@ -1,8 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmme83ox5j04o"]
+[gd_scene load_steps=7 format=3 uid="uid://bmme83ox5j04o"]
 
+[ext_resource type="Shader" uid="uid://cb8jtd0xbs4qa" path="res://scenes/pickups/fire_flower.gdshader" id="1_byh7g"]
 [ext_resource type="Texture2D" uid="uid://bv7tev2ehag3u" path="res://graphics/drops/fire_flower.png" id="1_emxg7"]
 [ext_resource type="Script" uid="uid://w7pst33eckjr" path="res://fire_flower.gd" id="2_byh7g"]
-[ext_resource type="Script" uid="uid://0c1ks5w2ubod" path="res://pickup_detection_component.gd" id="3_3ftgq"]
+[ext_resource type="Script" uid="uid://0c1ks5w2ubod" path="res://component/pickup_detection_component.gd" id="3_3ftgq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ftgq"]
+shader = ExtResource("1_byh7g")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wn57r"]
 radius = 22.0
@@ -10,6 +14,7 @@ height = 50.0
 
 [node name="FireFlower" type="Sprite2D"]
 z_index = -1
+material = SubResource("ShaderMaterial_3ftgq")
 texture = ExtResource("1_emxg7")
 script = ExtResource("2_byh7g")
 

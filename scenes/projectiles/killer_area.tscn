@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://rnmvc4giorc3"]
 
-[ext_resource type="Script" uid="uid://0q25a22vr82h" path="res://killer_area.gd" id="1_ybc27"]
+[ext_resource type="Script" uid="uid://0q25a22vr82h" path="res://scenes/projectiles/killer_area.gd" id="1_ybc27"]
 
 [node name="KillerArea" type="Area2D"]
 collision_mask = 4

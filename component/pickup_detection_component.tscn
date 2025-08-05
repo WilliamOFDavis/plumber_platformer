@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ewi3dqnxm5dv"]
 
-[ext_resource type="Script" uid="uid://0c1ks5w2ubod" path="res://pickup_detection_component.gd" id="1_e7jsl"]
+[ext_resource type="Script" uid="uid://0c1ks5w2ubod" path="res://component/pickup_detection_component.gd" id="1_e7jsl"]
 
 [node name="PickupDetectionComponent" type="Area2D"]
 collision_layer = 2

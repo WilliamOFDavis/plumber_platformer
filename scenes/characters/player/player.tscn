@@ -110,7 +110,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"in_air",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -144,7 +144,7 @@ shape = SubResource("RectangleShape2D_t61fv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_6avc5")
-animation = &"walk"
+animation = &"in_air"
 speed_scale = 2.0
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("growth_state_machine")]

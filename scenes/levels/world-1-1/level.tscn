@@ -124,7 +124,7 @@ size = Vector2(14957, 202)
 script = ExtResource("1_d45qa")
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("2_dtjso")]
-position = Vector2(974, 789)
+position = Vector2(-826, 1004)
 
 [node name="Timer" type="Timer" parent="CharacterBody2D"]
 wait_time = 0.1

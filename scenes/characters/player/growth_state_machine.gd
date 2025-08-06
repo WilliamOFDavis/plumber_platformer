@@ -12,7 +12,7 @@ func _ready() -> void:
 	add_state("small")
 	add_state("big")
 	add_state("fire")
-	call_deferred("set_state", states.fire)
+	call_deferred("set_state", states.big)
 func _get_transition(delta):
 	return null
 

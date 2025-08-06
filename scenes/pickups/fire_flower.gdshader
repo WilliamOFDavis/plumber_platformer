@@ -5,4 +5,3 @@ void vertex() {
 		VERTEX = VERTEX + vec2(sin(TIME * 0.5) * 15.0, 0.0);
 	}
 }
-

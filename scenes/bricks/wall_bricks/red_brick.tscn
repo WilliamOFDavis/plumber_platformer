@@ -1,10 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://264tm4bh1mmj"]
+[gd_scene load_steps=6 format=3 uid="uid://264tm4bh1mmj"]
 
 [ext_resource type="Script" uid="uid://dwownmvwhm6c6" path="res://scenes/bricks/wall_bricks/red_brick.gd" id="1_kkayq"]
 [ext_resource type="Texture2D" uid="uid://djy2m7524a0r1" path="res://graphics/blocks/red_brick.png" id="2_ysyhh"]
+[ext_resource type="Texture2D" uid="uid://dt0lo77q6dhq4" path="res://graphics/particles/red_brick_particle.png" id="3_dblxv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sey5v"]
 size = Vector2(66, 64)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ovruc"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(16, 16, 1)
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 300.0
+initial_velocity_max = 400.0
+gravity = Vector3(0, 98, 0)
 
 [node name="RedBrick" type="StaticBody2D" groups=["bricks"]]
 script = ExtResource("1_kkayq")
@@ -14,3 +24,11 @@ texture = ExtResource("2_ysyhh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_sey5v")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 5
+texture = ExtResource("3_dblxv")
+lifetime = 0.3
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_ovruc")
